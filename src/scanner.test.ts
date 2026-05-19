@@ -39,6 +39,20 @@ test('scanner can limit checks to explicit markdown files', async () => {
   assert.equal(report.findings.length, 0);
 });
 
+test('README metadata gaps are warnings', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/minimal-readme',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, true);
+  assert.deepEqual(report.findings.map((finding) => finding.kind), [
+    'missing-package-metadata',
+    'missing-package-metadata'
+  ]);
+  assert.deepEqual(new Set(report.findings.map((finding) => finding.severity)), new Set(['warning']));
+});
+
 test('smoke commands run only when requested', async () => {
   const skipped = await scanRepository({
     root: 'fixtures/smoke-fail',
