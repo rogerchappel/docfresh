@@ -27,6 +27,18 @@ test('stale fixture reports missing scripts, links, and files', async () => {
   ]);
 });
 
+test('scanner can limit checks to explicit markdown files', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/valid-docs',
+    markdown: ['docs/guide.md'],
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, true);
+  assert.equal(report.summary.markdownFiles, 1);
+  assert.equal(report.findings.length, 0);
+});
+
 test('smoke commands run only when requested', async () => {
   const skipped = await scanRepository({
     root: 'fixtures/smoke-fail',
