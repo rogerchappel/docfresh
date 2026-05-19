@@ -1,0 +1,39 @@
+{
+  "project": "docfresh",
+  "owner": "rogerchappel",
+  "repo": "docfresh",
+  "localPath": "/Users/roger/Developer/my-opensource/docfresh",
+  "prd": "/Users/roger/Developer/my-opensource/oss-ideas/ideas/in-progress/docfresh/PRD.md",
+  "scaffold": {
+    "tool": "StackForge",
+    "path": "/Users/roger/Developer/my-opensource/stackforge",
+    "template": "oss-cli"
+  },
+  "verification": [
+    "npm run check",
+    "npm test",
+    "npm run build",
+    "npm run smoke",
+    "bash scripts/validate.sh",
+    "node dist/cli.js check --root fixtures/valid-docs --format text --smoke"
+  ],
+  "github": {
+    "visibility": "public",
+    "defaultBranch": "main",
+    "description": "README/docs freshness checker for local repos",
+    "topics": [
+      "readme",
+      "documentation",
+      "freshness",
+      "cli",
+      "markdown",
+      "docs-as-tests"
+    ]
+  },
+  "safety": {
+    "telemetry": false,
+    "secretsRequired": false,
+    "networkByDefault": false
+  }
+}
+
