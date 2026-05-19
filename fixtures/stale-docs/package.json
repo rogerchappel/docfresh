@@ -1,0 +1,9 @@
+{
+  "name": "stale-docs",
+  "version": "1.0.0",
+  "description": "Fixture with stale docs.",
+  "scripts": {
+    "test": "node --version"
+  }
+}
+

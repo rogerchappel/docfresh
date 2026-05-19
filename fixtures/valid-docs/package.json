@@ -1,0 +1,10 @@
+{
+  "name": "valid-docs",
+  "version": "1.0.0",
+  "description": "Fixture with fresh docs.",
+  "scripts": {
+    "test": "node --version",
+    "build": "node --version"
+  }
+}
+

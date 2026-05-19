@@ -1,0 +1,9 @@
+{
+  "name": "smoke-fail",
+  "version": "1.0.0",
+  "description": "Fixture with a failing smoke command.",
+  "scripts": {
+    "test": "node --version"
+  }
+}
+
