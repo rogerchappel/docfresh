@@ -1,51 +1,97 @@
-# ../docfresh
+# DocFresh
 
-README/docs freshness checker for local repos.
+DocFresh is a local-first CLI that checks whether README and docs examples still match the repository they describe.
 
-## Status
-
-This repository is early-stage. Confirm the current support, release, and
-security posture before using it in production.
+It scans markdown files for local links, file references, package script commands, README package metadata, and explicitly marked smoke examples. It does not call hosted services, phone home, or run arbitrary commands by default.
 
 ## Install
 
-Replace this section with the generated repository's installation steps.
-
 ```sh
-pnpm install
+npm install
+npm run build
 ```
 
 ## Use
 
-Replace this section with the smallest useful example for the generated
-repository.
+Check the current repository:
 
 ```sh
-docfresh check
+node dist/cli.js check
 ```
+
+Check another local repository and print JSON:
+
+```sh
+node dist/cli.js check --root fixtures/valid-docs --format json
+```
+
+Run opted-in smoke examples:
+
+```sh
+node dist/cli.js check --root fixtures/valid-docs --smoke
+```
+
+Smoke commands only run when the fenced block is explicitly marked:
+
+````md
+```sh docfresh: smoke
+node --version
+```
+````
+
+## What It Checks
+
+- Broken local markdown links such as `[Guide](docs/missing.md)`.
+- Backticked file references such as `src/index.ts`.
+- Documented package commands such as `npm run build` or `pnpm check`.
+- Basic README install and usage coverage for package repositories.
+- Failing commands in fenced blocks marked with `docfresh: smoke` when `--smoke` is enabled.
+
+## Output
+
+Text output is optimized for terminal review:
+
+```sh
+node dist/cli.js check --root fixtures/stale-docs
+```
+
+JSON output is stable enough for scripts and agents:
+
+```sh
+node dist/cli.js check --root fixtures/stale-docs --format json
+```
+
+DocFresh exits with `0` when no error findings are present and `1` when documentation drift is found.
 
 ## Verify
 
-Run the local validation script before opening a pull request:
-
 ```sh
-npm run release:check
+npm run check
+npm test
+npm run build
+npm run smoke
+bash scripts/validate.sh
 ```
 
-`scripts/validate.sh` runs the repository's standard local checks when they are defined and will also run `agent-qc ready` when `agent-qc` is installed. Missing `agent-qc` is treated as a skip, not a failure.
+## Examples
+
+- `examples/basic` passes.
+- `examples/stale` intentionally fails.
+- `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
+
+## Source Attribution
+
+Inspired by markdown link checkers, README smoke tests, and docs-as-tests practices. Reframed for local developer-tool repos and agent-generated documentation.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution expectations. Changes
-should be small, reviewable, and verified before review.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Keep changes local-first, fixture-backed, and free of telemetry.
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for vulnerability reporting guidance. Replace
-the default security policy before publishing the generated repository.
-
-These links assume this README has been copied to the generated repository root.
+See [SECURITY.md](SECURITY.md). Do not include secrets in fixtures, examples, tests, or issue reports.
 
 ## License
 
 MIT
+
