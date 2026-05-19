@@ -1,79 +1,26 @@
 # Contributing
 
-Thanks for helping improve `../docfresh`.
+DocFresh is a local-first documentation freshness checker. Contributions should keep that contract simple and predictable.
 
-This project values small, reviewable contributions with clear verification.
+## Development
 
-## Issues
+```sh
+npm install
+npm run check
+npm test
+npm run smoke
+bash scripts/validate.sh
+```
 
-Before opening an issue:
+## Expectations
 
-- Search existing issues.
-- Confirm the issue applies to `../docfresh`.
-- Include enough context for maintainers to understand or reproduce the request.
-
-Bug reports should include:
-
-- What happened.
-- What you expected.
-- Steps to reproduce.
-- Relevant logs, screenshots, or files.
-- The smallest verification step that demonstrates the issue.
-
-Feature requests should include:
-
-- The use case.
-- Why the current project does not solve it.
-- Risks or compatibility concerns.
-- Suggested files or behavior that may need to change.
+- Add or update fixtures for scanner behavior changes.
+- Keep command execution opt-in; do not run undocumented commands by default.
+- Avoid telemetry, remote calls, and secret-bearing fixtures.
+- Prefer small, reviewable changes with clear failure output.
+- Keep JSON output stable unless the change is intentional and documented.
 
 ## Pull Requests
 
-Pull requests should:
+Include the problem, the behavior change, and the verification commands you ran. For new checks, include at least one passing and one failing fixture where practical.
 
-- Focus on one reviewable intent.
-- Use a branch.
-- Follow Conventional Commits.
-- Include tests or verification appropriate to the change.
-- Update documentation when behavior or usage changes.
-- Avoid unrelated formatting or dependency churn.
-- Avoid secrets, private contact details, and project-specific sensitive information.
-
-## Review Pack
-
-Use this format for meaningful changes:
-
-```md
-## Review Pack
-Repo:
-Branch:
-PR:
-Task:
-Status: done / blocked / needs review
-Summary:
-Commits:
-Files changed:
-Verification:
-Risk level:
-Rollback plan:
-Human decision needed:
-Next recommended task:
-```
-
-## Verification
-
-Every contribution should include verification.
-
-Examples:
-
-- Documentation: inspect rendered Markdown or review the diff.
-- Tests: run the targeted test command.
-- Types: run the project typecheck.
-- Build: run the smallest build command that covers the change.
-- Manual QA: provide exact steps and observed result.
-
-If verification cannot be run, explain why and provide the exact command maintainers should run.
-
-## Maintainer Review
-
-Maintainers may request narrower scope, clearer verification, additional tests, or safer defaults before merging.
