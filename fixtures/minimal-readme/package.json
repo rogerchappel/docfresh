@@ -1,0 +1,9 @@
+{
+  "name": "minimal-readme",
+  "version": "1.0.0",
+  "description": "Fixture with a thin README.",
+  "scripts": {
+    "test": "node --version"
+  }
+}
+
