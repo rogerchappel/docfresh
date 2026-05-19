@@ -1,13 +1,24 @@
-# ../docfresh Documentation
+# DocFresh Docs
 
-This directory holds project documentation.
+DocFresh validates docs against local repository state.
 
-## Contents
+## Commands
 
-- [Contributing guide](../CONTRIBUTING.md)
-- [Security policy](../SECURITY.md)
-- [Agent instructions](../AGENTS.md)
+```sh
+node dist/cli.js check --root .
+node dist/cli.js check --root . --format json
+node dist/cli.js check --root . --smoke
+```
 
-## Additional docs
+## Policies
 
-For a hosted documentation site, see the `docs-site/` directory if present.
+- Local-first: all checks run against files in the checkout.
+- Safe by default: smoke commands require both a `docfresh: smoke` marker and the `--smoke` flag.
+- Actionable reports: every finding includes a file, line, message, and suggested fix.
+
+## Planning
+
+- [PRD](PRD.md)
+- [Tasks](TASKS.md)
+- [Orchestration](ORCHESTRATION.md)
+
