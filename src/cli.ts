@@ -14,6 +14,7 @@ const help = `DocFresh checks whether README/docs examples still match a local r
 
 Usage:
   docfresh check [--root <path>] [--format text|json] [--markdown <file>] [--smoke]
+  docfresh --version
   docfresh --help
 
 Options:
@@ -24,6 +25,11 @@ Options:
 `;
 
 async function main(argv: string[]): Promise<number> {
+  if (argv.includes('--version') || argv.includes('-v')) {
+    process.stdout.write('0.1.0\n');
+    return 0;
+  }
+
   if (argv.includes('--help') || argv.includes('-h')) {
     process.stdout.write(help);
     return 0;
