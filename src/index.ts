@@ -9,3 +9,4 @@ export type {
   ScanSummary,
   Severity
 } from './types.js';
+export { scanRepository } from './scanner.js';
