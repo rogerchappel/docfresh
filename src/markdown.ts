@@ -18,7 +18,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
   let active: { line: number; language: string; content: string[]; smoke: boolean } | undefined;
 
   document.lines.forEach((line, index) => {
-    const fence = line.match(/^```\\s*([\\w-]+)?\\s*(.*)$/);
+    const fence = line.match(/^```\s*([\w-]+)?\s*(.*)$/);
     if (!fence) {
       active?.content.push(line);
       return;
@@ -29,7 +29,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
         line: index + 1,
         language: fence[1] ?? '',
         content: [],
-        smoke: /docfresh:\\s*smoke/i.test(fence[2] ?? '')
+        smoke: /docfresh:\s*smoke/i.test(fence[2] ?? '')
       };
       return;
     }
@@ -49,7 +49,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 
 export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[] {
   const links: MarkdownLink[] = [];
-  const pattern = /(?<!!)?\\[([^\\]]+)\\]\\(([^)\\s]+)(?:\\s+\"[^\"]*\")?\\)/g;
+  const pattern = /(?<!!)?\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)/g;
 
   document.lines.forEach((line, index) => {
     for (const match of line.matchAll(pattern)) {
@@ -67,7 +67,7 @@ export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[]
 
 export function extractFileReferences(document: MarkdownDocument): FileReference[] {
   const references: FileReference[] = [];
-  const pattern = /`((?:\\.\\/|\\.\\.\\/|[A-Za-z0-9_.-]+\\/)[A-Za-z0-9_./-]+)`/g;
+  const pattern = /`((?:\.\/|\.\.\/|[A-Za-z0-9_.-]+\/)[A-Za-z0-9_./-]+)`/g;
 
   document.lines.forEach((line, index) => {
     for (const match of line.matchAll(pattern)) {
