@@ -49,7 +49,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 
 export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[] {
   const links: MarkdownLink[] = [];
-  const pattern = /(?<!!)?\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)/g;
+  const pattern = /(?<!!)\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)/g;
 
   document.lines.forEach((line, index) => {
     for (const match of line.matchAll(pattern)) {

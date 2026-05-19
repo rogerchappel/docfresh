@@ -18,12 +18,17 @@ export async function loadPackageInfo(root: string): Promise<PackageInfo> {
   try {
     const raw = await readFile(path.join(root, 'package.json'), 'utf8');
     const parsed = JSON.parse(raw) as RawPackageJson;
-    return {
+    const info: PackageInfo = {
       exists: true,
-      name: typeof parsed.name === 'string' ? parsed.name : undefined,
-      description: typeof parsed.description === 'string' ? parsed.description : undefined,
       scripts: new Map(Object.entries(isRecord(parsed.scripts) ? parsed.scripts : {}).filter(isStringEntry))
     };
+    if (typeof parsed.name === 'string') {
+      info.name = parsed.name;
+    }
+    if (typeof parsed.description === 'string') {
+      info.description = parsed.description;
+    }
+    return info;
   } catch (error) {
     if (error instanceof SyntaxError) {
       throw new Error('package.json is not valid JSON.');
