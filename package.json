@@ -1,22 +1,51 @@
 {
-  "name": "docfresh",
+  "name": "@rogerchappel/docfresh",
   "version": "0.1.0",
   "description": "README/docs freshness checker for local repos.",
   "type": "module",
-  "main": "./src/index.js",
+  "bin": {
+    "docfresh": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
   "exports": {
-    ".": "./src/index.js"
+    ".": "./dist/index.js"
   },
   "files": [
-    "src",
-    "README.md"
+    "dist",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md"
   ],
   "scripts": {
-    "test": "node --test",
+    "build": "tsc",
+    "check": "tsc --noEmit",
+    "test": "npm run build && node --test dist/**/*.test.js",
+    "smoke": "npm run build && node dist/cli.js check --root fixtures/valid-docs --format text",
     "package:smoke": "npm pack --dry-run",
-    "release:check": "npm test && npm run package:smoke"
+    "release:check": "npm run check && npm test && npm run smoke && npm run package:smoke"
   },
-  "keywords": [],
+  "keywords": [
+    "readme",
+    "documentation",
+    "freshness",
+    "cli",
+    "markdown"
+  ],
   "author": "Roger Chappel",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rogerchappel/docfresh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rogerchappel/docfresh/issues"
+  },
+  "homepage": "https://github.com/rogerchappel/docfresh#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "typescript": "^5.8.3"
+  }
 }
