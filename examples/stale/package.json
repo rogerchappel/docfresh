@@ -1,0 +1,9 @@
+{
+  "name": "docfresh-stale-example",
+  "version": "1.0.0",
+  "description": "Failing DocFresh example.",
+  "scripts": {
+    "test": "node --version"
+  }
+}
+

@@ -1,0 +1,9 @@
+{
+  "name": "docfresh-basic-example",
+  "version": "1.0.0",
+  "description": "Passing DocFresh example.",
+  "scripts": {
+    "test": "node --version"
+  }
+}
+
