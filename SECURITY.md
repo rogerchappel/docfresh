@@ -1,58 +1,37 @@
 # Security Policy
 
+DocFresh is designed to run locally against repositories you already have on disk. It does not collect telemetry, send reports to hosted services, or perform network checks by default.
+
 ## Supported Versions
 
-Replace this section with the supported versions for `../docfresh`.
-
-Example:
-
-```md
-| Version | Supported |
-| --- | --- |
-| .x | Yes |
-| < .0 | No |
-```
-
-If the project does not publish versioned releases yet, say that clearly.
+The `main` branch is the only supported development line before the first stable release.
 
 ## Reporting a Vulnerability
 
-Please do not report suspected vulnerabilities in public issues, pull requests, or discussions.
+Please do not open a public issue with exploit details. Use GitHub private vulnerability reporting for `rogerchappel/docfresh` when available, or contact the maintainer for a private disclosure path.
 
-Ask maintainers for the private security reporting path before sharing details.
+Include:
 
-If no private reporting path exists yet, ask maintainers through public project channels for a private reporting path. Do not include exploit details, secrets, personal data, or sensitive technical details in public messages.
-
-## What to Include
-
-When a private reporting path is available, include:
-
-- A clear description of the issue.
-- Affected versions, files, packages, workflows, or configuration.
-- Steps to reproduce, proof of concept, or attack scenario when safe to share.
-- Potential impact.
-- Suggested mitigation, if known.
-
-## Response Expectations
-
-Maintainers review good-faith reports as capacity allows.
-
-Do not imply paid support, guaranteed response times, guaranteed fixes, or service-level agreements unless `../docfresh` explicitly provides them.
+- The affected version or commit.
+- Minimal reproduction steps.
+- Whether a crafted markdown file, package metadata file, or smoke command is required.
+- Any observed impact.
 
 ## Scope
 
 In scope:
 
-- Vulnerabilities in ../docfresh.
-- Insecure default configuration shipped by this project.
-- CI, release, or dependency guidance maintained by this project.
+- Unsafe default command execution.
+- Path traversal or repository-boundary mistakes.
+- Incorrect handling of untrusted markdown content.
+- CI, release, or dependency security issues in this repository.
 
 Out of scope:
 
-- General support requests.
-- Requests for guaranteed maintenance timelines.
-- Issues in unrelated downstream projects.
+- Stale documentation findings in third-party repositories.
+- Commands a user explicitly opted into with `--smoke` and `docfresh: smoke`, unless DocFresh executes something other than the marked command.
 
-## Disclosure
+## Secrets
 
-Coordinate disclosure with maintainers before publishing vulnerability details.
+Do not put secrets in fixtures, examples, screenshots, or issue reports. DocFresh test data should remain synthetic.
+
