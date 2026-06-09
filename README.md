@@ -90,8 +90,21 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Keep changes local-first, fixture-backed
 ## Security
 
 See [SECURITY.md](SECURITY.md). Do not include secrets in fixtures, examples, tests, or issue reports.
+## Release readiness
+
+Run the same checks expected before opening or cutting a release:
+
+```sh
+npm run check
+npm run test
+npm run build
+npm run smoke
+npm run package:smoke
+npm run release:check
+```
+
+Use `npm pack --dry-run` to confirm the published package contains the CLI/runtime files plus README, license, security, support, and release notes.
 
 ## License
-
 MIT
 
