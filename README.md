@@ -31,6 +31,13 @@ Run opted-in smoke examples:
 node dist/cli.js check --root fixtures/valid-docs --smoke
 ```
 
+Run a copy-pasteable fixture demo that builds the CLI and captures both text and
+JSON reports:
+
+```sh
+bash examples/check-valid-docs-demo.sh
+```
+
 Smoke commands only run when the fenced block is explicitly marked:
 
 ````md
@@ -120,4 +127,3 @@ npm run release:check
 
 ## License
 MIT
-
