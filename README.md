@@ -86,6 +86,23 @@ bash scripts/validate.sh
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
 
+## Demo Recipes
+
+Run a passing fixture and capture text and JSON reports:
+
+```sh
+bash examples/check-valid-docs-demo.sh
+```
+
+Run the stale-docs fixture and confirm DocFresh reports review-worthy drift:
+
+```sh
+bash demo/stale-docs-report.sh
+```
+
+For promotion or screencast prep, see
+[`docs/promo/stale-docs-video-brief.md`](docs/promo/stale-docs-video-brief.md).
+
 ## Source Attribution
 
 Inspired by markdown link checkers, README smoke tests, and docs-as-tests practices. Reframed for local developer-tool repos and agent-generated documentation.
