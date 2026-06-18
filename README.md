@@ -79,6 +79,16 @@ bash scripts/validate.sh
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
 
+For a fixture-backed demo that writes both a clean JSON report and a stale text
+report, run:
+
+```sh
+bash demo/readme-drift-smoke.sh
+```
+
+See [the README drift demo](docs/tutorials/readme-drift-demo.md) for a
+walkthrough script and promotion-safe talking points.
+
 ## Source Attribution
 
 Inspired by markdown link checkers, README smoke tests, and docs-as-tests practices. Reframed for local developer-tool repos and agent-generated documentation.
@@ -120,4 +130,3 @@ npm run release:check
 
 ## License
 MIT
-
