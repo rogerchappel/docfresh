@@ -86,6 +86,16 @@ bash scripts/validate.sh
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
 
+For a fixture-backed demo that writes both a clean JSON report and a stale text
+report, run:
+
+```sh
+bash demo/readme-drift-smoke.sh
+```
+
+See [the README drift demo](docs/tutorials/readme-drift-demo.md) for a
+walkthrough script and promotion-safe talking points.
+
 ## Demo Recipes
 
 Run a passing fixture and capture text and JSON reports:
