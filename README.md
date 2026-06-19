@@ -31,6 +31,13 @@ Run opted-in smoke examples:
 node dist/cli.js check --root fixtures/valid-docs --smoke
 ```
 
+Run a copy-pasteable fixture demo that builds the CLI and captures both text and
+JSON reports:
+
+```sh
+bash examples/check-valid-docs-demo.sh
+```
+
 Smoke commands only run when the fenced block is explicitly marked:
 
 ````md
@@ -88,6 +95,33 @@ bash demo/readme-smoke-check.sh
 ```
 
 See [docs/tutorials/readme-smoke-gate.md](docs/tutorials/readme-smoke-gate.md) for a pull request workflow that starts with regular docs drift checks and adds opted-in smoke commands.
+
+For a fixture-backed demo that writes both a clean JSON report and a stale text
+report, run:
+
+```sh
+bash demo/readme-drift-smoke.sh
+```
+
+See [the README drift demo](docs/tutorials/readme-drift-demo.md) for a
+walkthrough script and promotion-safe talking points.
+
+## Demo Recipes
+
+Run a passing fixture and capture text and JSON reports:
+
+```sh
+bash examples/check-valid-docs-demo.sh
+```
+
+Run the stale-docs fixture and confirm DocFresh reports review-worthy drift:
+
+```sh
+bash demo/stale-docs-report.sh
+```
+
+For promotion or screencast prep, see
+[`docs/promo/stale-docs-video-brief.md`](docs/promo/stale-docs-video-brief.md).
 
 ## Source Attribution
 
