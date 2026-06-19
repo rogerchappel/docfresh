@@ -23,6 +23,12 @@ calling hosted services by default.
 4. Smoke examples should be explicit. DocFresh only runs fenced commands marked
    with `docfresh: smoke`, so docs checks stay reviewable instead of surprising.
 
+5. Demo: `bash demo/readme-smoke-check.sh` creates passing text and JSON reports,
+   then proves the stale fixture fails.
+
+6. CI pattern: run `node dist/cli.js check --root .` on every pull request, then
+   add `--smoke` for deterministic examples.
+
 ## Demo CTA
 
 Run:
