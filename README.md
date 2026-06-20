@@ -120,6 +120,16 @@ Run the stale-docs fixture and confirm DocFresh reports review-worthy drift:
 bash demo/stale-docs-report.sh
 ```
 
+Compare a clean README fixture with a thin README that needs install and usage
+metadata:
+
+```sh
+bash demo/readme-readiness-gate.sh
+```
+
+See [docs/tutorials/readme-readiness-gate.md](docs/tutorials/readme-readiness-gate.md)
+for a pre-release docs review workflow.
+
 For promotion or screencast prep, see
 [`docs/promo/stale-docs-video-brief.md`](docs/promo/stale-docs-video-brief.md).
 
