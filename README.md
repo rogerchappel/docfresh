@@ -31,6 +31,13 @@ Run opted-in smoke examples:
 node dist/cli.js check --root fixtures/valid-docs --smoke
 ```
 
+Run a copy-pasteable fixture demo that builds the CLI and captures both text and
+JSON reports:
+
+```sh
+bash examples/check-valid-docs-demo.sh
+```
+
 Smoke commands only run when the fenced block is explicitly marked:
 
 ````md
@@ -85,6 +92,53 @@ bash scripts/validate.sh
 - [Local docs freshness demo](docs/tutorials/local-docs-freshness.md)
 - [Video brief](docs/promo/video-brief.md)
 - [Social hooks](docs/promo/social-hooks.md)
+
+## Demo
+
+Run the fixture-backed demo to capture passing, stale, JSON, and smoke-check outputs:
+
+```sh
+bash demo/readme-smoke-check.sh
+```
+
+See [docs/tutorials/readme-smoke-gate.md](docs/tutorials/readme-smoke-gate.md) for a pull request workflow that starts with regular docs drift checks and adds opted-in smoke commands.
+
+For a fixture-backed demo that writes both a clean JSON report and a stale text
+report, run:
+
+```sh
+bash demo/readme-drift-smoke.sh
+```
+
+See [the README drift demo](docs/tutorials/readme-drift-demo.md) for a
+walkthrough script and promotion-safe talking points.
+
+## Demo Recipes
+
+Run a passing fixture and capture text and JSON reports:
+
+```sh
+bash examples/check-valid-docs-demo.sh
+```
+
+Run the stale-docs fixture and confirm DocFresh reports review-worthy drift:
+
+```sh
+bash demo/stale-docs-report.sh
+```
+
+Compare a clean README fixture with a thin README that needs install and usage
+metadata:
+
+```sh
+bash demo/readme-readiness-gate.sh
+```
+
+See [docs/tutorials/readme-readiness-gate.md](docs/tutorials/readme-readiness-gate.md)
+for a pre-release docs review workflow.
+
+For promotion or screencast prep, see
+[`docs/promo/stale-docs-video-brief.md`](docs/promo/stale-docs-video-brief.md).
 
 ## Source Attribution
 
