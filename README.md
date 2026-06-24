@@ -140,6 +140,13 @@ for a pre-release docs review workflow.
 For promotion or screencast prep, see
 [`docs/promo/stale-docs-video-brief.md`](docs/promo/stale-docs-video-brief.md).
 
+For a runnable CI-style drift check, see
+[CI Docs Drift Check](docs/tutorials/ci-docs-drift-check.md):
+
+```sh
+bash demo/ci-docs-drift.sh
+```
+
 ## Source Attribution
 
 Inspired by markdown link checkers, README smoke tests, and docs-as-tests practices. Reframed for local developer-tool repos and agent-generated documentation.
