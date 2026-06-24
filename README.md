@@ -79,6 +79,13 @@ bash scripts/validate.sh
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
 
+For a runnable CI-style drift check, see
+[CI Docs Drift Check](docs/tutorials/ci-docs-drift-check.md):
+
+```sh
+bash demo/ci-docs-drift.sh
+```
+
 ## Source Attribution
 
 Inspired by markdown link checkers, README smoke tests, and docs-as-tests practices. Reframed for local developer-tool repos and agent-generated documentation.
@@ -120,4 +127,3 @@ npm run release:check
 
 ## License
 MIT
-
