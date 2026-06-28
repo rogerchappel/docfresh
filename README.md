@@ -63,6 +63,19 @@ node dist/cli.js check --root fixtures/stale-docs --format json
 
 DocFresh exits with `0` when no error findings are present and `1` when documentation drift is found.
 
+## Demo
+
+Generate pass/fail JSON reports from the checked-in fixtures:
+
+```sh
+bash demo/run-json-drift-demo.sh
+```
+
+The script writes `.docfresh-demo/valid-docs.json` and
+`.docfresh-demo/stale-docs.json` so reviewers can inspect both sides of the
+drift signal. See [JSON Drift Report Demo](docs/tutorials/json-drift-report.md)
+for the walkthrough.
+
 ## Verify
 
 ```sh
@@ -120,4 +133,3 @@ npm run release:check
 
 ## License
 MIT
-
