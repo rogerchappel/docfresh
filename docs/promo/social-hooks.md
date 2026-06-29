@@ -30,25 +30,37 @@ bash examples/run-docfresh-demo.sh
 
 ## Short posts
 
-1. Docs drift often starts small: one renamed file, one deleted npm script, one
+1. DocFresh checks whether README examples still match the local repo: links, backticked files, package scripts, package metadata, and opt-in smoke blocks.
+
+2. Agent-written docs need receipts. DocFresh gives a local `check` command that can fail stale README examples before review.
+
+3. The useful default is conservative: scan docs without running arbitrary commands, then opt in to smoke blocks only when the docs mark them explicitly.
+
+4. Docs drift often starts small: one renamed file, one deleted npm script, one
    stale README example. DocFresh catches those local-first before review.
 
-2. I built DocFresh for the boring checks that keep agent-written docs honest:
+5. I built DocFresh for the boring checks that keep agent-written docs honest:
    local links, file references, package scripts, README metadata, and opted-in
    smoke commands.
 
-3. `node dist/cli.js check --root fixtures/valid-docs --format json` gives
+6. `node dist/cli.js check --root fixtures/valid-docs --format json` gives
    agents and scripts a stable report they can inspect without uploading repo
    contents anywhere.
 
-4. Smoke examples should be explicit. DocFresh only runs fenced commands marked
+7. Smoke examples should be explicit. DocFresh only runs fenced commands marked
    with `docfresh: smoke`, so docs checks stay reviewable instead of surprising.
 
-5. Demo: `bash demo/readme-smoke-check.sh` creates passing text and JSON reports,
+8. Demo: `bash demo/readme-smoke-check.sh` creates passing text and JSON reports,
    then proves the stale fixture fails.
 
-6. CI pattern: run `node dist/cli.js check --root .` on every pull request, then
+9. CI pattern: run `node dist/cli.js check --root .` on every pull request, then
    add `--smoke` for deterministic examples.
+
+## Demo angle
+
+Run `bash demo/run-docs-sweep.sh`, then show the passing fixture and the stale
+fixture side by side. The story is simple: one command produces a human-readable
+report and stable JSON, and stale docs exit non-zero.
 
 ## Demo CTA
 
