@@ -79,6 +79,15 @@ bash scripts/validate.sh
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
 
+For a pre-PR demo that writes both passing and stale-docs reports to a temporary directory:
+
+```sh
+npm run build
+bash demo/run-docs-sweep.sh
+```
+
+See [`docs/tutorials/pre-pr-docs-sweep.md`](docs/tutorials/pre-pr-docs-sweep.md) for the walkthrough and [`docs/promo/social-hooks.md`](docs/promo/social-hooks.md) for grounded promotion copy.
+
 ## Source Attribution
 
 Inspired by markdown link checkers, README smoke tests, and docs-as-tests practices. Reframed for local developer-tool repos and agent-generated documentation.
@@ -120,4 +129,3 @@ npm run release:check
 
 ## License
 MIT
-
