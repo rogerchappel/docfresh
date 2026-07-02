@@ -78,6 +78,11 @@ bash scripts/validate.sh
 - `examples/basic` passes.
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
+- `demo/run-docfresh-basic.sh` runs a short README freshness demo and verifies
+  the JSON report for the passing fixture.
+
+See [README Freshness Demo](docs/tutorials/readme-freshness-demo.md) for a
+recording-ready walkthrough.
 
 ## Source Attribution
 
@@ -120,4 +125,3 @@ npm run release:check
 
 ## License
 MIT
-
