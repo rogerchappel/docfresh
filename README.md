@@ -98,11 +98,14 @@ bash scripts/validate.sh
 - `examples/basic` passes.
 - `examples/stale` intentionally fails.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
+- `demo/run-docfresh-basic.sh` runs a short README freshness demo and verifies
+  the JSON report for the passing fixture.
 - `bash examples/run-docfresh-demo.sh` runs a fixture-backed freshness demo and checks a JSON report.
 
 ## Demo and Promotion
 
 - [Local docs freshness demo](docs/tutorials/local-docs-freshness.md)
+- [README Freshness Demo](docs/tutorials/readme-freshness-demo.md)
 - [Video brief](docs/promo/video-brief.md)
 - [Social hooks](docs/promo/social-hooks.md)
 
