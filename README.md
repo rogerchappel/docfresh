@@ -6,9 +6,25 @@ It scans markdown files for local links, file references, package script command
 
 ## Install
 
+Install the CLI from npm:
+
+```sh
+npm install -g @rogerchappel/docfresh
+docfresh --help
+```
+
+Or run it without a global install:
+
+```sh
+npx @rogerchappel/docfresh --help
+```
+
+For local development:
+
 ```sh
 npm install
 npm run build
+node dist/cli.js --help
 ```
 
 ## Use
@@ -16,19 +32,19 @@ npm run build
 Check the current repository:
 
 ```sh
-node dist/cli.js check
+docfresh check
 ```
 
 Check another local repository and print JSON:
 
 ```sh
-node dist/cli.js check --root fixtures/valid-docs --format json
+docfresh check --root fixtures/valid-docs --format json
 ```
 
 Run opted-in smoke examples:
 
 ```sh
-node dist/cli.js check --root fixtures/valid-docs --smoke
+docfresh check --root fixtures/valid-docs --smoke
 ```
 
 Run a copy-pasteable fixture demo that builds the CLI and captures both text and
@@ -59,13 +75,13 @@ node --version
 Text output is optimized for terminal review:
 
 ```sh
-node dist/cli.js check --root fixtures/stale-docs
+docfresh check --root fixtures/stale-docs
 ```
 
 JSON output is stable enough for scripts and agents:
 
 ```sh
-node dist/cli.js check --root fixtures/stale-docs --format json
+docfresh check --root fixtures/stale-docs --format json
 ```
 
 DocFresh exits with `0` when no error findings are present and `1` when documentation drift is found.
