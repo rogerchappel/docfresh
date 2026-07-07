@@ -12,6 +12,10 @@
   },
   "files": [
     "dist",
+    "demo",
+    "docs",
+    "examples",
+    "fixtures",
     "README.md",
     "LICENSE",
     "SECURITY.md",
@@ -26,7 +30,7 @@
     "check": "tsc --noEmit",
     "test": "npm run build && node --test dist/*.test.js",
     "smoke": "npm run build && node dist/cli.js check --root fixtures/valid-docs --format text",
-    "package:smoke": "npm pack --dry-run",
+    "package:smoke": "npm run build && node scripts/package-smoke.mjs",
     "release:check": "npm run check && npm test && npm run smoke && npm run package:smoke",
     "lint": "npm run check"
   },
