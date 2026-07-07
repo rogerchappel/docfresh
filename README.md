@@ -106,6 +106,7 @@ npm run check
 npm test
 npm run build
 npm run smoke
+npm run package:smoke
 bash scripts/validate.sh
 ```
 
@@ -212,7 +213,7 @@ npm run package:smoke
 npm run release:check
 ```
 
-Use `npm pack --dry-run` to confirm the published package contains the CLI/runtime files plus README, license, security, support, and release notes.
+Use `npm run package:smoke` to confirm the published package contains the CLI/runtime files, checked-in demo assets, fixtures, docs, README, license, security, support, and release notes.
 
 ## Development
 
