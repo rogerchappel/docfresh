@@ -180,6 +180,9 @@ For a runnable CI-style drift check, see
 bash demo/ci-docs-drift.sh
 ```
 
+Promotion-ready hooks for that CI demo live in
+[`docs/promo/ci-docs-drift-social-hooks.md`](docs/promo/ci-docs-drift-social-hooks.md).
+
 For a pre-PR demo that writes both passing and stale-docs reports to a temporary directory:
 
 ```sh
