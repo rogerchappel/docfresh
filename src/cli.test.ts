@@ -1,9 +1,16 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 import { test } from 'node:test';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
+
+test('CLI prints package version', async () => {
+  const pkg = JSON.parse(await readFile('package.json', 'utf8')) as { version: string };
+  const { stdout } = await execFileAsync(process.execPath, ['dist/cli.js', '--version']);
+  assert.equal(stdout, `${pkg.version}\n`);
+});
 
 test('CLI returns JSON reports', async () => {
   const { stdout } = await execFileAsync(process.execPath, [
