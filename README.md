@@ -194,6 +194,9 @@ bash demo/ci-docs-drift.sh
 
 Promotion-ready hooks for that CI demo live in
 [`docs/promo/ci-docs-drift-social-hooks.md`](docs/promo/ci-docs-drift-social-hooks.md).
+Launch-positioning notes across the stale-docs, package-script, and CI drift
+demos live in
+[`docs/promo/docs-drift-launch-notes.md`](docs/promo/docs-drift-launch-notes.md).
 
 For a pre-PR demo that writes both passing and stale-docs reports to a temporary directory:
 
