@@ -203,6 +203,8 @@ bash demo/run-docs-sweep.sh
 ```
 
 See [`docs/tutorials/pre-pr-docs-sweep.md`](docs/tutorials/pre-pr-docs-sweep.md) for the walkthrough and [`docs/promo/social-hooks.md`](docs/promo/social-hooks.md) for grounded promotion copy.
+For a short screencast outline of the same flow, see
+[`docs/promo/pre-pr-docs-sweep-video-brief.md`](docs/promo/pre-pr-docs-sweep-video-brief.md).
 
 ## Source Attribution
 
