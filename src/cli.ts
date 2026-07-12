@@ -1,7 +1,11 @@
 #!/usr/bin/env node
+import { createRequire } from 'node:module';
 import { scanRepository } from './scanner.js';
 import { formatJson, formatText } from './reporters.js';
 import type { OutputFormat } from './types.js';
+
+const require = createRequire(import.meta.url);
+const { version } = require('../package.json') as { version: string };
 
 type CliOptions = {
   root: string;
@@ -26,7 +30,7 @@ Options:
 
 async function main(argv: string[]): Promise<number> {
   if (argv.includes('--version') || argv.includes('-v')) {
-    process.stdout.write('0.1.0\n');
+    process.stdout.write(`${version}\n`);
     return 0;
   }
 
