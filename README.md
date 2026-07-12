@@ -170,6 +170,18 @@ bash demo/readme-readiness-gate.sh
 See [docs/tutorials/readme-readiness-gate.md](docs/tutorials/readme-readiness-gate.md)
 for a pre-release docs review workflow.
 
+Capture the expected failure path for a stale package script and broken local
+references:
+
+```sh
+bash demo/package-script-reference-sweep.sh
+```
+
+See [docs/tutorials/package-script-reference-sweep.md](docs/tutorials/package-script-reference-sweep.md)
+for the walkthrough and
+[docs/promo/package-script-reference-social-hooks.md](docs/promo/package-script-reference-social-hooks.md)
+for promotion-safe hooks.
+
 For promotion or screencast prep, see
 [`docs/promo/stale-docs-video-brief.md`](docs/promo/stale-docs-video-brief.md).
 
