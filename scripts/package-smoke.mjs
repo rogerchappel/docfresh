@@ -5,6 +5,7 @@ import { existsSync } from 'node:fs';
 const requiredPaths = [
   'dist/cli.js',
   'dist/index.js',
+  'dist/index.d.ts',
   'demo/readme-smoke-check.sh',
   'docs/tutorials/readme-smoke-gate.md',
   'examples/check-valid-docs-demo.sh',
