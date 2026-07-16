@@ -114,6 +114,8 @@ bash scripts/validate.sh
 
 - `examples/basic` passes.
 - `examples/stale` intentionally fails.
+- `bash examples/pre-pr-markdown-gate.sh` checks one README in fresh and stale
+  fixtures and verifies JSON gate output.
 - `fixtures/valid-docs`, `fixtures/stale-docs`, and `fixtures/smoke-fail` back the automated tests.
 - `demo/run-docfresh-basic.sh` runs a short README freshness demo and verifies
   the JSON report for the passing fixture.
