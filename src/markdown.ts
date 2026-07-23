@@ -38,7 +38,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
       file: document.path,
       line: active.line,
       language: active.language,
-      content: active.content.join('\\n').trim(),
+      content: active.content.join('\n').trim(),
       smoke: active.smoke
     });
     active = undefined;
