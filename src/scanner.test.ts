@@ -39,6 +39,25 @@ test('scanner can limit checks to explicit markdown files', async () => {
   assert.equal(report.findings.length, 0);
 });
 
+test('multiline command fences check each package script independently', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/multiline-commands',
+    runSmoke: false
+  });
+
+  const missingScripts = report.findings.filter((finding) => finding.kind === 'missing-package-script');
+  assert.equal(report.ok, false);
+  assert.equal(missingScripts.length, 1);
+  assert.deepEqual(missingScripts[0], {
+    kind: 'missing-package-script',
+    severity: 'error',
+    file: 'README.md',
+    line: 13,
+    message: 'Documented command "npm run missing-script" references missing package script "missing-script".',
+    suggestion: 'Add the package script or update the documented command.'
+  });
+});
+
 test('README metadata gaps are warnings', async () => {
   const report = await scanRepository({
     root: 'fixtures/minimal-readme',

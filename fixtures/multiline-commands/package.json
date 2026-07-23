@@ -1,0 +1,9 @@
+{
+  "name": "multiline-commands",
+  "version": "1.0.0",
+  "description": "Fixture with multiple package commands in one fence.",
+  "scripts": {
+    "build": "node --version",
+    "test": "node --version"
+  }
+}
