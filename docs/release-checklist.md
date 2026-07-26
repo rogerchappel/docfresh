@@ -6,8 +6,10 @@ Use this checklist before publishing docfresh.
 
 - Run `npm install` from a clean checkout.
 - Run `npm run release:check` when available.
-- Run `npm pack --dry-run` and inspect the file list.
-- Run the documented CLI smoke command from the README.
+- Run `npm run package:smoke` to pack, install, and invoke the CLI from an
+  isolated temporary prefix.
+- Run the source-install commands documented in the README from a clean
+  temporary directory.
 
 ## Package Contents
 
@@ -27,3 +29,4 @@ Confirm the package includes:
 - Release notes call out breaking changes or explicitly state that there are none.
 - Security and support docs give users a clear place to report issues.
 - CI is green on the release branch.
+- npm install and npx guidance is added only after the package is published.
