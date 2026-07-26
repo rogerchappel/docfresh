@@ -6,24 +6,22 @@ It scans markdown files for local links, file references, package script command
 
 ## Install
 
-Install the CLI from npm:
+DocFresh is not published to npm yet. Install the current CLI from a source
+checkout:
 
 ```sh
-npm install -g @rogerchappel/docfresh
+git clone https://github.com/rogerchappel/docfresh.git
+cd docfresh
+npm ci
+npm run build
+npm pack
+npm install -g ./rogerchappel-docfresh-0.1.0.tgz
 docfresh --help
 ```
 
-Or run it without a global install:
+To run it without a global install, use the built entry point:
 
 ```sh
-npx @rogerchappel/docfresh --help
-```
-
-For local development:
-
-```sh
-npm install
-npm run build
 node dist/cli.js --help
 ```
 
@@ -235,7 +233,9 @@ npm run package:smoke
 npm run release:check
 ```
 
-Use `npm run package:smoke` to confirm the published package contains the CLI/runtime files, checked-in demo assets, fixtures, docs, README, license, security, support, and release notes.
+Use `npm run package:smoke` to create the package tarball, confirm it contains
+the CLI/runtime files and required documentation assets, install it in an
+isolated temporary prefix, and invoke `docfresh --help`.
 
 ## Development
 
