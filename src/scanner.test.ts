@@ -39,6 +39,24 @@ test('scanner can limit checks to explicit markdown files', async () => {
   assert.equal(report.findings.length, 0);
 });
 
+test('nested docs resolve bare paths from the repository root', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/root-references',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, false);
+  assert.deepEqual(
+    report.findings
+      .filter((finding) => finding.kind === 'missing-file')
+      .map((finding) => [finding.file, finding.message]),
+    [
+      ['docs/tutorials/guide.md', 'Referenced file "./missing.md" does not exist.'],
+      ['docs/tutorials/guide.md', 'Referenced file "src/absent.js" does not exist.']
+    ]
+  );
+});
+
 test('multiline command fences check each package script independently', async () => {
   const report = await scanRepository({
     root: 'fixtures/multiline-commands',

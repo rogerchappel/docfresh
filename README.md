@@ -45,6 +45,10 @@ Run opted-in smoke examples:
 docfresh check --root fixtures/valid-docs --smoke
 ```
 
+The repository's own maintained-document gate is `npm run self:check`. It
+targets the product and tutorial documents, excluding promotional and
+deliberately stale demonstration material.
+
 Run a copy-pasteable fixture demo that builds the CLI and captures both text and
 JSON reports:
 
@@ -63,7 +67,10 @@ node --version
 ## What It Checks
 
 - Broken local markdown links such as `[Guide](docs/missing.md)`.
-- Backticked file references such as `src/index.ts`.
+- Backticked file references such as `src/index.ts`. Paths beginning with `./`
+  or `../` resolve from the Markdown file; all other paths resolve from the
+  repository root. Extensionless owner/project identifiers are ignored when
+  they do not match an existing root path.
 - Documented package commands such as `npm run build` or `pnpm check`.
 - Basic README install and usage coverage for package repositories.
 - Failing commands in fenced blocks marked with `docfresh: smoke` when `--smoke` is enabled.

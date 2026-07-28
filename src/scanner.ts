@@ -113,8 +113,17 @@ async function checkFileReferences(root: string, documents: MarkdownDocument[]):
 
   for (const document of documents) {
     for (const reference of extractFileReferences(document)) {
-      const absolute = path.resolve(root, path.dirname(document.path), reference.target);
-      if (!await pathExists(absolute)) {
+      const documentRelative = reference.target.startsWith('./') || reference.target.startsWith('../');
+      const absolute = documentRelative
+        ? path.resolve(root, path.dirname(document.path), reference.target)
+        : path.resolve(root, reference.target);
+      const exists = await pathExists(absolute);
+
+      // A bare owner/project token is indistinguishable from an extensionless
+      // root path. Existing directories are still accepted, while absent
+      // extensionless tokens are left alone unless the author used ./ or ../
+      // to explicitly mark them as paths.
+      if (!exists && (documentRelative || path.extname(reference.target) !== '')) {
         findings.push({
           kind: 'missing-file',
           severity: 'error',
