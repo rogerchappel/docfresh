@@ -49,20 +49,53 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 
 export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[] {
   const links: MarkdownLink[] = [];
-  const pattern = /(?<!!)\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)/g;
+  const labelPattern = /(?<!!)\[([^\]]+)\]\(/g;
 
   document.lines.forEach((line, index) => {
-    for (const match of line.matchAll(pattern)) {
+    for (const match of line.matchAll(labelPattern)) {
+      const start = (match.index ?? 0) + match[0].length;
+      const target = parseInlineLinkDestination(line, start);
+      if (target === undefined) {
+        continue;
+      }
+
       links.push({
         file: document.path,
         line: index + 1,
         label: match[1] ?? '',
-        target: match[2] ?? ''
+        target
       });
     }
   });
 
   return links;
+}
+
+function parseInlineLinkDestination(line: string, start: number): string | undefined {
+  let depth = 0;
+
+  for (let index = start; index < line.length; index += 1) {
+    const character = line[index];
+    if (character === '\\') {
+      index += 1;
+      continue;
+    }
+    if (/\s/.test(character ?? '')) {
+      return depth === 0 ? line.slice(start, index) : undefined;
+    }
+    if (character === '(') {
+      depth += 1;
+      continue;
+    }
+    if (character === ')') {
+      if (depth === 0) {
+        return line.slice(start, index);
+      }
+      depth -= 1;
+    }
+  }
+
+  return undefined;
 }
 
 export function extractFileReferences(document: MarkdownDocument): FileReference[] {

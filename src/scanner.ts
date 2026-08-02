@@ -86,7 +86,7 @@ async function checkLocalLinks(root: string, documents: MarkdownDocument[]): Pro
         continue;
       }
 
-      const target = stripFragment(decodeURIComponent(link.target));
+      const target = stripFragment(decodeURIComponent(link.target.replace(/\\([()])/g, '$1')));
       if (target.length === 0) {
         continue;
       }
