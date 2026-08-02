@@ -27,6 +27,26 @@ test('stale fixture reports missing scripts, links, and files', async () => {
   ]);
 });
 
+test('local links preserve balanced and escaped parentheses in destinations', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/parenthesized-links',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, false);
+  assert.deepEqual(
+    report.findings.filter((finding) => finding.kind === 'broken-local-link'),
+    [{
+      kind: 'broken-local-link',
+      severity: 'error',
+      file: 'README.md',
+      line: 6,
+      message: 'Local link target "docs/missing(2).md" does not exist.',
+      suggestion: 'Fix the link target or add the referenced file.'
+    }]
+  );
+});
+
 test('scanner can limit checks to explicit markdown files', async () => {
   const report = await scanRepository({
     root: 'fixtures/valid-docs',
