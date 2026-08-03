@@ -91,7 +91,7 @@ test('multiline command fences check each package script independently', async (
     severity: 'error',
     file: 'README.md',
     line: 13,
-    message: 'Documented command "npm run missing-script" references missing package script "missing-script".',
+    message: 'Documented command "yarn run missing-script" references missing package script "missing-script".',
     suggestion: 'Add the package script or update the documented command.'
   });
 });
