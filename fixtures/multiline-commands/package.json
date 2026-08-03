@@ -4,6 +4,8 @@
   "description": "Fixture with multiple package commands in one fence.",
   "scripts": {
     "build": "node --version",
-    "test": "node --version"
+    "check": "node --version",
+    "lint": "node --version",
+    "test:unit": "node --version"
   }
 }

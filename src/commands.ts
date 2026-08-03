@@ -23,12 +23,12 @@ export function extractDocumentedScriptCommands(content: string): DocumentedComm
       continue;
     }
 
-    if ((first === 'npm' || first === 'bun') && second === 'run' && third) {
+    if (second === 'run' && third && third !== '--' && !third.startsWith('-')) {
       commands.push({ name: third, raw: line });
       continue;
     }
 
-    if ((first === 'pnpm' || first === 'yarn') && second && !isPackageManagerBuiltin(second)) {
+    if ((first === 'pnpm' || first === 'yarn' || first === 'bun') && second && !second.startsWith('-') && !isPackageManagerBuiltin(second)) {
       commands.push({ name: second, raw: line });
     }
   }
@@ -37,5 +37,5 @@ export function extractDocumentedScriptCommands(content: string): DocumentedComm
 }
 
 function isPackageManagerBuiltin(value: string): boolean {
-  return ['install', 'add', 'remove', 'exec', 'dlx', 'init', 'create', 'test'].includes(value);
+  return ['run', 'install', 'add', 'remove', 'exec', 'dlx', 'init', 'create', 'test'].includes(value);
 }

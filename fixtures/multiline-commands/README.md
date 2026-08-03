@@ -12,6 +12,8 @@ npm install
 
 ```sh
 npm run build
-npm test
-npm run missing-script
+pnpm run check -- --watch
+yarn lint --fix
+bun run test:unit -- --coverage
+yarn run missing-script
 ```

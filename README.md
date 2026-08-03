@@ -73,7 +73,10 @@ node --version
   or `../` resolve from the Markdown file; all other paths resolve from the
   repository root. Extensionless owner/project identifiers are ignored when
   they do not match an existing root path.
-- Documented package commands such as `npm run build` or `pnpm check`.
+- Documented package scripts using `npm run build`, explicit `run` forms such
+  as `pnpm run check`, or the pnpm, Yarn, and Bun shorthand forms such as
+  `yarn lint`. Script arguments after the name, including a `--` separator,
+  are supported.
 - Basic README install and usage coverage for package repositories.
 - Failing commands in fenced blocks marked with `docfresh: smoke` when `--smoke` is enabled.
 
