@@ -67,8 +67,10 @@ node --version
 ## What It Checks
 
 - Broken local markdown links such as `[Guide](docs/missing.md)`. Inline link
-  destinations may contain balanced or backslash-escaped parentheses. Angle-bracket
-  destinations and multiline inline links are not currently supported.
+  destinations may contain balanced or backslash-escaped parentheses. CommonMark
+  angle-bracket destinations (including paths with spaces) and full or collapsed
+  reference-style links are supported. Multiline link definitions and inline links
+  are not currently supported.
 - Backticked file references such as `src/index.ts`. Paths beginning with `./`
   or `../` resolve from the Markdown file; all other paths resolve from the
   repository root. Extensionless owner/project identifiers are ignored when
