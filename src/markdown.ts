@@ -50,6 +50,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[] {
   const links: MarkdownLink[] = [];
   const labelPattern = /(?<!!)\[([^\]]+)\]\(/g;
+  const definitions = extractLinkDefinitions(document.lines);
 
   document.lines.forEach((line, index) => {
     for (const match of line.matchAll(labelPattern)) {
@@ -66,12 +67,42 @@ export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[]
         target
       });
     }
+
+    const referencePattern = /(?<!!)\[([^\]]+)\]\[([^\]]*)\]/g;
+    for (const match of line.matchAll(referencePattern)) {
+      const label = match[1] ?? '';
+      const identifier = normalizeReferenceLabel(match[2] || label);
+      const target = definitions.get(identifier);
+      if (target === undefined) {
+        continue;
+      }
+
+      links.push({
+        file: document.path,
+        line: index + 1,
+        label,
+        target
+      });
+    }
   });
 
   return links;
 }
 
 function parseInlineLinkDestination(line: string, start: number): string | undefined {
+  if (line[start] === '<') {
+    for (let index = start + 1; index < line.length; index += 1) {
+      if (line[index] === '\\') {
+        index += 1;
+        continue;
+      }
+      if (line[index] === '>') {
+        return line.slice(start + 1, index);
+      }
+    }
+    return undefined;
+  }
+
   let depth = 0;
 
   for (let index = start; index < line.length; index += 1) {
@@ -96,6 +127,42 @@ function parseInlineLinkDestination(line: string, start: number): string | undef
   }
 
   return undefined;
+}
+
+function extractLinkDefinitions(lines: string[]): Map<string, string> {
+  const definitions = new Map<string, string>();
+  const definitionPattern = /^ {0,3}\[([^\]]+)\]:\s*/;
+
+  for (const line of lines) {
+    const match = line.match(definitionPattern);
+    if (!match) {
+      continue;
+    }
+    const start = match[0].length;
+    const target = parseReferenceDestination(line, start);
+    if (target !== undefined) {
+      const identifier = normalizeReferenceLabel(match[1] ?? '');
+      if (!definitions.has(identifier)) {
+        definitions.set(identifier, target);
+      }
+    }
+  }
+
+  return definitions;
+}
+
+function parseReferenceDestination(line: string, start: number): string | undefined {
+  if (line[start] === '<') {
+    const end = line.indexOf('>', start + 1);
+    return end === -1 ? undefined : line.slice(start + 1, end);
+  }
+
+  const match = line.slice(start).match(/^(?:\\.|[^\s])+/);
+  return match?.[0];
+}
+
+function normalizeReferenceLabel(label: string): string {
+  return label.trim().replace(/\s+/g, ' ').toLowerCase();
 }
 
 export function extractFileReferences(document: MarkdownDocument): FileReference[] {
