@@ -47,6 +47,36 @@ test('local links preserve balanced and escaped parentheses in destinations', as
   );
 });
 
+test('local links support angle-bracket destinations and reference definitions', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/commonmark-links',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, false);
+  assert.deepEqual(
+    report.findings.filter((finding) => finding.kind === 'broken-local-link'),
+    [
+      {
+        kind: 'broken-local-link',
+        severity: 'error',
+        file: 'README.md',
+        line: 4,
+        message: 'Local link target "docs/missing guide.md" does not exist.',
+        suggestion: 'Fix the link target or add the referenced file.'
+      },
+      {
+        kind: 'broken-local-link',
+        severity: 'error',
+        file: 'README.md',
+        line: 7,
+        message: 'Local link target "docs/missing-reference.md" does not exist.',
+        suggestion: 'Fix the link target or add the referenced file.'
+      }
+    ]
+  );
+});
+
 test('scanner can limit checks to explicit markdown files', async () => {
   const report = await scanRepository({
     root: 'fixtures/valid-docs',
