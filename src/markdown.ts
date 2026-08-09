@@ -15,33 +15,58 @@ export type FileReference = {
 
 export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[] {
   const blocks: CommandBlock[] = [];
-  let active: { line: number; language: string; content: string[]; smoke: boolean } | undefined;
+  let active: {
+    line: number;
+    language: string;
+    content: string[];
+    smoke: boolean;
+    marker: '`' | '~';
+    length: number;
+  } | undefined;
 
   document.lines.forEach((line, index) => {
-    const fence = line.match(/^```\s*([\w-]+)?\s*(.*)$/);
-    if (!fence) {
-      active?.content.push(line);
+    if (active) {
+      const closingFence = line.match(/^ {0,3}([`~]{3,})[ \t]*$/);
+      const closesActive = closingFence
+        && closingFence[1]?.[0] === active.marker
+        && closingFence[1].length >= active.length;
+
+      if (!closesActive) {
+        active.content.push(line);
+        return;
+      }
+
+      blocks.push({
+        file: document.path,
+        line: active.line,
+        language: active.language,
+        content: active.content.join('\n').trim(),
+        smoke: active.smoke
+      });
+      active = undefined;
       return;
     }
 
-    if (!active) {
-      active = {
-        line: index + 1,
-        language: fence[1] ?? '',
-        content: [],
-        smoke: /docfresh:\s*smoke/i.test(fence[2] ?? '')
-      };
+    const openingFence = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+    if (!openingFence) {
       return;
     }
 
-    blocks.push({
-      file: document.path,
-      line: active.line,
-      language: active.language,
-      content: active.content.join('\n').trim(),
-      smoke: active.smoke
-    });
-    active = undefined;
+    const markerRun = openingFence[1] ?? '';
+    const info = (openingFence[2] ?? '').trim();
+    if (markerRun[0] === '`' && info.includes('`')) {
+      return;
+    }
+
+    const infoParts = info.match(/^([\w-]+)?\s*(.*)$/);
+    active = {
+      line: index + 1,
+      language: infoParts?.[1] ?? '',
+      content: [],
+      smoke: /docfresh:\s*smoke/i.test(infoParts?.[2] ?? ''),
+      marker: markerRun[0] as '`' | '~',
+      length: markerRun.length
+    };
   });
 
   return blocks;
