@@ -56,7 +56,10 @@ JSON reports:
 bash examples/check-valid-docs-demo.sh
 ```
 
-Smoke commands only run when the fenced block is explicitly marked:
+Smoke commands only run when the fenced block is explicitly marked. Command
+blocks support CommonMark backtick and tilde fences with up to three leading
+spaces. The closing fence must use the same marker and contain at least as many
+markers as the opening fence:
 
 ````md
 ```sh docfresh: smoke
@@ -80,7 +83,8 @@ node --version
   `yarn lint`. Script arguments after the name, including a `--` separator,
   are supported.
 - Basic README install and usage coverage for package repositories.
-- Failing commands in fenced blocks marked with `docfresh: smoke` when `--smoke` is enabled.
+- Failing commands in CommonMark backtick or tilde fenced blocks marked with
+  `docfresh: smoke` when `--smoke` is enabled.
 
 ## Output
 
