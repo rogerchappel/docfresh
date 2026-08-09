@@ -126,6 +126,34 @@ test('multiline command fences check each package script independently', async (
   });
 });
 
+test('CommonMark fences feed package-script and opted-in smoke checks', async () => {
+  const skipped = await scanRepository({
+    root: 'fixtures/commonmark-fences',
+    runSmoke: false
+  });
+
+  assert.deepEqual(
+    skipped.findings
+      .filter((finding) => finding.kind === 'missing-package-script')
+      .map((finding) => finding.message),
+    [
+      'Documented command "npm run missing-npm" references missing package script "missing-npm".',
+      'Documented command "pnpm run missing-pnpm" references missing package script "missing-pnpm".',
+      'Documented command "yarn missing-yarn" references missing package script "missing-yarn".',
+      'Documented command "bun missing-bun" references missing package script "missing-bun".'
+    ]
+  );
+  assert.equal(skipped.summary.smokeCommands, 0);
+
+  const smoked = await scanRepository({
+    root: 'fixtures/commonmark-fences',
+    runSmoke: true
+  });
+
+  assert.equal(smoked.summary.smokeCommands, 1);
+  assert.equal(smoked.findings.filter((finding) => finding.kind === 'smoke-failed').length, 1);
+});
+
 test('README metadata gaps are warnings', async () => {
   const report = await scanRepository({
     root: 'fixtures/minimal-readme',
