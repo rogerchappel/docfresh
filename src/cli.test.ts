@@ -37,3 +37,26 @@ test('CLI exits non-zero when drift is found', async () => {
     }
   );
 });
+
+test('CLI reports malformed local link encoding in text and JSON formats', async () => {
+  for (const format of ['text', 'json']) {
+    await assert.rejects(
+      execFileAsync(process.execPath, [
+        'dist/cli.js',
+        'check',
+        '--root',
+        'fixtures/percent-encoded-links',
+        '--format',
+        format
+      ]),
+      (error: unknown) => {
+        const stdout = String((error as { stdout?: string }).stdout);
+        assert.match(stdout, /invalid-local-link/);
+        assert.match(stdout, /README\.md/);
+        assert.match(stdout, /docs\/inline%ZZ\.md/);
+        assert.match(stdout, /docs\/reference%E0%A4%A\.md/);
+        return true;
+      }
+    );
+  }
+});

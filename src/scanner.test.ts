@@ -77,6 +77,33 @@ test('local links support angle-bracket destinations and reference definitions',
   );
 });
 
+test('malformed percent-encoding produces findings without aborting local link checks', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/percent-encoded-links',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, false);
+  assert.deepEqual(report.findings.filter((finding) => finding.kind === 'invalid-local-link'), [
+    {
+      kind: 'invalid-local-link',
+      severity: 'error',
+      file: 'README.md',
+      line: 4,
+      message: 'Local link target "docs/inline%ZZ.md" has malformed percent-encoding.',
+      suggestion: 'Replace invalid percent escapes with valid percent-encoding or literal characters.'
+    },
+    {
+      kind: 'invalid-local-link',
+      severity: 'error',
+      file: 'README.md',
+      line: 6,
+      message: 'Local link target "docs/reference%E0%A4%A.md" has malformed percent-encoding.',
+      suggestion: 'Replace invalid percent escapes with valid percent-encoding or literal characters.'
+    }
+  ]);
+});
+
 test('scanner can limit checks to explicit markdown files', async () => {
   const report = await scanRepository({
     root: 'fixtures/valid-docs',
