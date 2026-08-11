@@ -86,7 +86,26 @@ async function checkLocalLinks(root: string, documents: MarkdownDocument[]): Pro
         continue;
       }
 
-      const target = stripFragment(decodeURIComponent(link.target.replace(/\\([()])/g, '$1')));
+      let decodedTarget: string;
+      try {
+        decodedTarget = decodeURIComponent(link.target.replace(/\\([()])/g, '$1'));
+      } catch (error) {
+        if (!(error instanceof URIError)) {
+          throw error;
+        }
+
+        findings.push({
+          kind: 'invalid-local-link',
+          severity: 'error',
+          file: link.file,
+          line: link.line,
+          message: `Local link target "${link.target}" has malformed percent-encoding.`,
+          suggestion: 'Replace invalid percent escapes with valid percent-encoding or literal characters.'
+        });
+        continue;
+      }
+
+      const target = stripFragment(decodedTarget);
       if (target.length === 0) {
         continue;
       }

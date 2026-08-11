@@ -7,6 +7,7 @@ export type FindingKind =
   | 'missing-package-script'
   | 'stale-command'
   | 'broken-local-link'
+  | 'invalid-local-link'
   | 'missing-package-metadata'
   | 'smoke-failed';
 

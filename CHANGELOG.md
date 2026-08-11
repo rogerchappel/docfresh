@@ -6,4 +6,5 @@
 - Added markdown link, file reference, package script, README metadata, and explicit smoke checks.
 - Added text and JSON reports.
 - Added fixtures, tests, examples, docs, and validation workflow.
-
+- Report malformed percent-encoding in local Markdown links as structured findings
+  instead of aborting text and JSON scans.
