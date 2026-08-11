@@ -73,7 +73,9 @@ node --version
   destinations may contain balanced or backslash-escaped parentheses. CommonMark
   angle-bracket destinations (including paths with spaces) and full or collapsed
   reference-style links are supported. Multiline link definitions and inline links
-  are not currently supported.
+  are not currently supported. Valid percent-encoded paths are decoded before they
+  are checked; malformed percent-encoding is reported as an `invalid-local-link`
+  finding instead of aborting the scan.
 - Backticked file references such as `src/index.ts`. Paths beginning with `./`
   or `../` resolve from the Markdown file; all other paths resolve from the
   repository root. Extensionless owner/project identifiers are ignored when
