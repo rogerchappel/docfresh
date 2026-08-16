@@ -104,6 +104,16 @@ test('malformed percent-encoding produces findings without aborting local link c
   ]);
 });
 
+test('local links support repository-root paths and URL query and fragment components', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/local-link-url-forms',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, true);
+  assert.deepEqual(report.findings, []);
+});
+
 test('scanner can limit checks to explicit markdown files', async () => {
   const report = await scanRepository({
     root: 'fixtures/valid-docs',

@@ -27,6 +27,21 @@ test('CLI returns JSON reports', async () => {
   assert.equal(report.summary.markdownFiles, 2);
 });
 
+test('CLI accepts repository-root links with URL query and fragment components', async () => {
+  const { stdout } = await execFileAsync(process.execPath, [
+    'dist/cli.js',
+    'check',
+    '--root',
+    'fixtures/local-link-url-forms',
+    '--format',
+    'json'
+  ]);
+
+  const report = JSON.parse(stdout) as { ok: boolean; findings: unknown[] };
+  assert.equal(report.ok, true);
+  assert.deepEqual(report.findings, []);
+});
+
 test('CLI exits non-zero when drift is found', async () => {
   await assert.rejects(
     execFileAsync(process.execPath, ['dist/cli.js', 'check', '--root', 'fixtures/stale-docs']),
