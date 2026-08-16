@@ -3,7 +3,7 @@ import { extractDocumentedScriptCommands } from './commands.js';
 import { findMarkdownFiles, pathExists, readMarkdownDocuments } from './files.js';
 import { extractCommandBlocks, extractFileReferences, extractMarkdownLinks } from './markdown.js';
 import { loadPackageInfo } from './package-info.js';
-import { isExternalTarget, stripFragment } from './path-utils.js';
+import { isExternalTarget, stripUrlSearchAndFragment } from './path-utils.js';
 import { runSmokeBlocks } from './smoke.js';
 import type { Finding, MarkdownDocument, ScanOptions, ScanReport } from './types.js';
 
@@ -105,12 +105,14 @@ async function checkLocalLinks(root: string, documents: MarkdownDocument[]): Pro
         continue;
       }
 
-      const target = stripFragment(decodedTarget);
+      const target = stripUrlSearchAndFragment(decodedTarget);
       if (target.length === 0) {
         continue;
       }
 
-      const absolute = path.resolve(root, path.dirname(document.path), target);
+      const absolute = target.startsWith('/')
+        ? path.resolve(root, target.slice(1))
+        : path.resolve(root, path.dirname(document.path), target);
       if (!await pathExists(absolute)) {
         findings.push({
           kind: 'broken-local-link',

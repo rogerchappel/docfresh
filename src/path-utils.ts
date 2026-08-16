@@ -22,9 +22,11 @@ export function relativePath(root: string, filePath: string): string {
   return toPosixPath(path.relative(root, filePath)) || '.';
 }
 
-export function stripFragment(value: string): string {
+export function stripUrlSearchAndFragment(value: string): string {
+  const searchIndex = value.indexOf('?');
   const hashIndex = value.indexOf('#');
-  return hashIndex === -1 ? value : value.slice(0, hashIndex);
+  const componentIndexes = [searchIndex, hashIndex].filter((index) => index !== -1);
+  return componentIndexes.length === 0 ? value : value.slice(0, Math.min(...componentIndexes));
 }
 
 export function isExternalTarget(value: string): boolean {
