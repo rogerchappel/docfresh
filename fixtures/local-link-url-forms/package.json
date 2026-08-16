@@ -1,0 +1,7 @@
+{
+  "name": "local-link-url-forms-fixture",
+  "private": true,
+  "scripts": {
+    "check": "echo checked"
+  }
+}
