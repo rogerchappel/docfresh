@@ -85,7 +85,8 @@ node --version
 - Documented package scripts using `npm run build`, explicit `run` forms such
   as `pnpm run check`, or the pnpm, Yarn, and Bun shorthand forms such as
   `yarn lint`. Script arguments after the name, including a `--` separator,
-  are supported.
+  are supported. Every package-script invocation in a command chained with
+  `&&`, `||`, or `;` is checked; quoted operators remain part of an argument.
 - Basic README install and usage coverage for package repositories.
 - Failing commands in CommonMark backtick or tilde fenced blocks marked with
   `docfresh: smoke` when `--smoke` is enabled.
