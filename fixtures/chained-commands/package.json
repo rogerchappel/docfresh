@@ -1,0 +1,7 @@
+{
+  "name": "chained-commands-fixture",
+  "private": true,
+  "scripts": {
+    "build": "echo build"
+  }
+}

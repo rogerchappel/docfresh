@@ -23,6 +23,23 @@ test('extracts supported shorthand commands and their arguments', () => {
   assert.deepEqual(commands.map(({ name }) => name), ['check', 'lint', 'test:unit']);
 });
 
+test('extracts every package script from chained shell commands', () => {
+  const commands = extractDocumentedScriptCommands([
+    'npm run build && npm run missing',
+    'pnpm check || yarn run fallback; bun run finish',
+    'npm run quoted -- "one && two"'
+  ].join('\n'));
+
+  assert.deepEqual(commands, [
+    { name: 'build', raw: 'npm run build' },
+    { name: 'missing', raw: 'npm run missing' },
+    { name: 'check', raw: 'pnpm check' },
+    { name: 'fallback', raw: 'yarn run fallback' },
+    { name: 'finish', raw: 'bun run finish' },
+    { name: 'quoted', raw: 'npm run quoted -- "one && two"' }
+  ]);
+});
+
 test('ignores builtins, options, incomplete run commands, and comments', () => {
   const commands = extractDocumentedScriptCommands([
     'npm install',

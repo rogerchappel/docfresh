@@ -163,6 +163,22 @@ test('multiline command fences check each package script independently', async (
   });
 });
 
+test('chained command fixtures report missing scripts from later segments', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/chained-commands',
+    runSmoke: false
+  });
+
+  assert.deepEqual(report.findings.filter((finding) => finding.kind === 'missing-package-script'), [{
+    kind: 'missing-package-script',
+    severity: 'error',
+    file: 'README.md',
+    line: 7,
+    message: 'Documented command "npm run missing" references missing package script "missing".',
+    suggestion: 'Add the package script or update the documented command.'
+  }]);
+});
+
 test('CommonMark fences feed package-script and opted-in smoke checks', async () => {
   const skipped = await scanRepository({
     root: 'fixtures/commonmark-fences',
