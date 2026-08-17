@@ -53,6 +53,19 @@ test('CLI exits non-zero when drift is found', async () => {
   );
 });
 
+test('CLI reports missing scripts in later chained-command segments', async () => {
+  await assert.rejects(
+    execFileAsync(process.execPath, ['dist/cli.js', 'check', '--root', 'fixtures/chained-commands']),
+    (error: unknown) => {
+      const stdout = String((error as { stdout?: string }).stdout);
+      assert.match(stdout, /missing-package-script/);
+      assert.match(stdout, /README\.md:7/);
+      assert.match(stdout, /npm run missing/);
+      return true;
+    }
+  );
+});
+
 test('CLI reports malformed local link encoding in text and JSON formats', async () => {
   for (const format of ['text', 'json']) {
     await assert.rejects(
