@@ -131,6 +131,12 @@ npm run package:smoke
 bash scripts/validate.sh
 ```
 
+Before pushing a stable release tag, verify that it exactly matches the
+`package.json` version (for example, `npm run release:tag-check -- v0.1.0`).
+The release workflow performs this preflight before creating package or GitHub
+release artifacts. npm publication remains disabled until credentials and
+policy are configured.
+
 ## Examples
 
 - `examples/basic` passes.

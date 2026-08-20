@@ -6,6 +6,9 @@ Use this checklist before publishing docfresh.
 
 - Run `npm install` from a clean checkout.
 - Run `npm run release:check` when available.
+- Confirm the stable release tag exactly matches the version in `package.json`:
+  `npm run release:tag-check -- v0.1.0`. Missing, malformed, prerelease, and
+  version-mismatched tags stop the release before package artifacts are built.
 - Run `npm run package:smoke` to pack, install, and invoke the CLI from an
   isolated temporary prefix.
 - Run the source-install commands documented in the README from a clean
