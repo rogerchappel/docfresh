@@ -36,6 +36,7 @@
     "smoke": "npm run build && node dist/cli.js check --root fixtures/valid-docs --format text",
     "self:check": "npm run build && node dist/cli.js check --root . --format text --markdown docs/README.md --markdown docs/PRD.md --markdown docs/TASKS.md --markdown docs/tutorials/markdown-reference-sweep.md",
     "package:smoke": "npm run build && node scripts/package-smoke.mjs",
+    "release:tag-check": "node scripts/check-release-tag.mjs",
     "release:check": "npm run check && npm test && npm run smoke && npm run self:check && npm run package:smoke",
     "lint": "npm run check"
   },
