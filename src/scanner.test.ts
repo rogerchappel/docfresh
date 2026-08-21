@@ -114,6 +114,36 @@ test('local links support repository-root paths and URL query and fragment compo
   assert.deepEqual(report.findings, []);
 });
 
+test('local image destinations use the same local-reference rules as links', async () => {
+  const report = await scanRepository({
+    root: 'fixtures/image-links',
+    runSmoke: false
+  });
+
+  assert.equal(report.ok, false);
+  assert.deepEqual(
+    report.findings.filter((finding) => finding.kind === 'broken-local-link'),
+    [
+      {
+        kind: 'broken-local-link',
+        severity: 'error',
+        file: 'README.md',
+        line: 4,
+        message: 'Local link target "assets/missing.png" does not exist.',
+        suggestion: 'Fix the link target or add the referenced file.'
+      },
+      {
+        kind: 'broken-local-link',
+        severity: 'error',
+        file: 'README.md',
+        line: 13,
+        message: 'Local link target "assets/missing-reference.png" does not exist.',
+        suggestion: 'Fix the link target or add the referenced file.'
+      }
+    ]
+  );
+});
+
 test('scanner can limit checks to explicit markdown files', async () => {
   const report = await scanRepository({
     root: 'fixtures/valid-docs',
