@@ -74,7 +74,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 
 export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[] {
   const links: MarkdownLink[] = [];
-  const labelPattern = /(?<!!)\[([^\]]+)\]\(/g;
+  const labelPattern = /\[([^\]]+)\]\(/g;
   const definitions = extractLinkDefinitions(document.lines);
 
   document.lines.forEach((line, index) => {
@@ -93,7 +93,7 @@ export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[]
       });
     }
 
-    const referencePattern = /(?<!!)\[([^\]]+)\]\[([^\]]*)\]/g;
+    const referencePattern = /\[([^\]]+)\]\[([^\]]*)\]/g;
     for (const match of line.matchAll(referencePattern)) {
       const label = match[1] ?? '';
       const identifier = normalizeReferenceLabel(match[2] || label);
