@@ -69,7 +69,9 @@ node --version
 
 ## What It Checks
 
-- Broken local markdown links such as `[Guide](docs/missing.md)`. Inline link
+- Broken local markdown links and images, such as `[Guide](docs/missing.md)` and
+  `![Diagram](assets/missing.png)`. Image destinations use the same local-path
+  rules as ordinary links. Inline link
   destinations may contain balanced or backslash-escaped parentheses. CommonMark
   angle-bracket destinations (including paths with spaces) and full or collapsed
   reference-style links are supported. Multiline link definitions and inline links
