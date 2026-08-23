@@ -16,6 +16,9 @@
   },
   "files": [
     "dist",
+    "!dist/**/*.test.js",
+    "!dist/**/*.test.js.map",
+    "!dist/**/*.test.d.ts",
     "demo",
     "docs",
     "examples",
