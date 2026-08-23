@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -22,6 +22,17 @@ const requiredPaths = [
   'CONTRIBUTING.md',
   'CODE_OF_CONDUCT.md'
 ];
+
+const compiledTestPattern = /^dist\/.*\.test\.(?:js|js\.map|d\.ts)$/;
+
+function listFiles(directory, prefix = '') {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = join(prefix, entry.name).replaceAll('\\', '/');
+    return entry.isDirectory()
+      ? listFiles(join(directory, entry.name), relativePath)
+      : [relativePath];
+  });
+}
 
 const missingLocalPaths = requiredPaths.filter((path) => !existsSync(path));
 if (missingLocalPaths.length > 0) {
@@ -47,11 +58,22 @@ try {
   const [pack] = JSON.parse(packOutput);
   const packedFiles = new Set(pack.files.map((file) => file.path));
   const missingPackedPaths = requiredPaths.filter((path) => !packedFiles.has(path));
+  const expectedRuntimePaths = listFiles('dist')
+    .map((path) => `dist/${path}`)
+    .filter((path) => !compiledTestPattern.test(path));
+  const missingRuntimePaths = expectedRuntimePaths.filter((path) => !packedFiles.has(path));
+  const packedTestArtifacts = [...packedFiles].filter((path) => compiledTestPattern.test(path));
 
-  if (missingPackedPaths.length > 0) {
-    console.error('Missing files from npm package:');
+  if (missingPackedPaths.length > 0 || missingRuntimePaths.length > 0 || packedTestArtifacts.length > 0) {
+    console.error('Invalid npm package manifest:');
     for (const path of missingPackedPaths) {
-      console.error(`- ${path}`);
+      console.error(`- missing required file: ${path}`);
+    }
+    for (const path of missingRuntimePaths) {
+      console.error(`- missing runtime file: ${path}`);
+    }
+    for (const path of packedTestArtifacts) {
+      console.error(`- contains compiled test artifact: ${path}`);
     }
     process.exitCode = 1;
   } else {
@@ -85,8 +107,29 @@ try {
       throw new Error('Installed docfresh --help output did not contain the expected usage.');
     }
 
+    const packageRoot = join(installRoot, 'node_modules', '@rogerchappel', 'docfresh');
+    const checkOutput = execFileSync(
+      executable,
+      ['check', '--root', join(packageRoot, 'fixtures', 'valid-docs'), '--format', 'json'],
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] }
+    );
+    const report = JSON.parse(checkOutput);
+    if (report.ok !== true || report.summary?.findings !== 0) {
+      throw new Error('Installed docfresh check did not pass against the packaged valid fixture.');
+    }
+
+    execFileSync(
+      process.execPath,
+      [
+        '--input-type=module',
+        '--eval',
+        "const module = await import('@rogerchappel/docfresh'); if (typeof module.scanRepository !== 'function') process.exit(1);"
+      ],
+      { cwd: installRoot, stdio: 'inherit' }
+    );
+
     console.log(
-      `Verified ${requiredPaths.length} release files and installed ${pack.filename}; docfresh --help passed.`
+      `Verified ${pack.files.length} packed files, installed ${pack.filename}, and exercised CLI/import surfaces.`
     );
   }
 } finally {
