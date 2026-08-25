@@ -27,6 +27,15 @@ test('stale fixture reports missing scripts, links, and files', async () => {
   ]);
 });
 
+test('fenced code examples are excluded from link and file validation', async () => {
+  const report = await scanRepository({ root: 'fixtures/fenced-links', runSmoke: false });
+  assert.equal(report.ok, false);
+  assert.deepEqual(report.findings.map((finding) => finding.message), [
+    'Local link target "docs/missing-before.md" does not exist.',
+    'Local link target "docs/missing-after.md" does not exist.'
+  ]);
+});
+
 test('local links preserve balanced and escaped parentheses in destinations', async () => {
   const report = await scanRepository({
     root: 'fixtures/parenthesized-links',
