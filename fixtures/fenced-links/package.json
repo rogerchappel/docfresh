@@ -1,0 +1,6 @@
+{
+  "name": "fenced-links",
+  "version": "1.0.0",
+  "description": "Fixture for fenced Markdown examples.",
+  "scripts": { "test": "node --version" }
+}
