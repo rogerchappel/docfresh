@@ -13,6 +13,41 @@ export type FileReference = {
   target: string;
 };
 
+type Fence = { marker: '`' | '~'; length: number };
+
+function parseOpeningFence(line: string): { fence: Fence; info: string } | undefined {
+  const match = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+  if (!match) return undefined;
+  const run = match[1] ?? '';
+  const info = (match[2] ?? '').trim();
+  if (run[0] === '`' && info.includes('`')) return undefined;
+  return { fence: { marker: run[0] as '`' | '~', length: run.length }, info };
+}
+
+function isClosingFence(line: string, fence: Fence): boolean {
+  const match = line.match(/^ {0,3}([`~]{3,})[ \t]*$/);
+  const run = match?.[1] ?? '';
+  return run[0] === fence.marker && run.length >= fence.length;
+}
+
+function markdownContentLines(document: MarkdownDocument): Array<{ line: string; index: number }> {
+  const content: Array<{ line: string; index: number }> = [];
+  let active: Fence | undefined;
+  document.lines.forEach((line, index) => {
+    if (active) {
+      if (isClosingFence(line, active)) active = undefined;
+      return;
+    }
+    const opening = parseOpeningFence(line);
+    if (opening) {
+      active = opening.fence;
+      return;
+    }
+    content.push({ line, index });
+  });
+  return content;
+}
+
 export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[] {
   const blocks: CommandBlock[] = [];
   let active: {
@@ -26,10 +61,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 
   document.lines.forEach((line, index) => {
     if (active) {
-      const closingFence = line.match(/^ {0,3}([`~]{3,})[ \t]*$/);
-      const closesActive = closingFence
-        && closingFence[1]?.[0] === active.marker
-        && closingFence[1].length >= active.length;
+      const closesActive = isClosingFence(line, { marker: active.marker, length: active.length });
 
       if (!closesActive) {
         active.content.push(line);
@@ -47,16 +79,12 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
       return;
     }
 
-    const openingFence = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+    const openingFence = parseOpeningFence(line);
     if (!openingFence) {
       return;
     }
 
-    const markerRun = openingFence[1] ?? '';
-    const info = (openingFence[2] ?? '').trim();
-    if (markerRun[0] === '`' && info.includes('`')) {
-      return;
-    }
+    const info = openingFence.info;
 
     const infoParts = info.match(/^([\w-]+)?\s*(.*)$/);
     active = {
@@ -64,8 +92,8 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
       language: infoParts?.[1] ?? '',
       content: [],
       smoke: /docfresh:\s*smoke/i.test(infoParts?.[2] ?? ''),
-      marker: markerRun[0] as '`' | '~',
-      length: markerRun.length
+      marker: openingFence.fence.marker,
+      length: openingFence.fence.length
     };
   });
 
@@ -75,9 +103,10 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
 export function extractMarkdownLinks(document: MarkdownDocument): MarkdownLink[] {
   const links: MarkdownLink[] = [];
   const labelPattern = /\[([^\]]+)\]\(/g;
-  const definitions = extractLinkDefinitions(document.lines);
+  const contentLines = markdownContentLines(document);
+  const definitions = extractLinkDefinitions(contentLines.map(({ line }) => line));
 
-  document.lines.forEach((line, index) => {
+  contentLines.forEach(({ line, index }) => {
     for (const match of line.matchAll(labelPattern)) {
       const start = (match.index ?? 0) + match[0].length;
       const target = parseInlineLinkDestination(line, start);
@@ -194,7 +223,7 @@ export function extractFileReferences(document: MarkdownDocument): FileReference
   const references: FileReference[] = [];
   const pattern = /`((?:\.\/|\.\.\/|[A-Za-z0-9_.-]+\/)[A-Za-z0-9_./-]+)`/g;
 
-  document.lines.forEach((line, index) => {
+  markdownContentLines(document).forEach(({ line, index }) => {
     for (const match of line.matchAll(pattern)) {
       const target = match[1] ?? '';
       if (!target.endsWith('/')) {
