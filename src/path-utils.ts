@@ -30,5 +30,5 @@ export function stripUrlSearchAndFragment(value: string): string {
 }
 
 export function isExternalTarget(value: string): boolean {
-  return /^[a-z][a-z0-9+.-]*:/i.test(value) || value.startsWith('mailto:') || value.startsWith('#');
+  return /^[a-z][a-z0-9+.-]*:/i.test(value) || value.startsWith('//') || value.startsWith('#');
 }
