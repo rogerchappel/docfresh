@@ -79,9 +79,10 @@ node --version
   file references inside backtick or tilde fenced code examples are excluded from
   validation. Valid percent-encoded paths are decoded before they
   are checked; malformed percent-encoding is reported as an `invalid-local-link`
-  finding instead of aborting the scan. A leading `/` resolves from the repository
-  root; otherwise links resolve from the Markdown file. URL query strings and
-  fragments are ignored when checking whether the local path exists.
+  finding instead of aborting the scan. A single leading `/` resolves from the
+  repository root, while a protocol-relative `//host/path` destination is treated
+  as external; otherwise links resolve from the Markdown file. URL query strings
+  and fragments are ignored when checking whether the local path exists.
 - Backticked file references such as `src/index.ts`. Paths beginning with `./`
   or `../` resolve from the Markdown file; all other paths resolve from the
   repository root. Extensionless owner/project identifiers are ignored when
