@@ -27,7 +27,7 @@ test('CLI returns JSON reports', async () => {
   assert.equal(report.summary.markdownFiles, 2);
 });
 
-test('CLI accepts repository-root links with URL query and fragment components', async () => {
+test('CLI accepts repository-root links, URL components, and protocol-relative URLs', async () => {
   const { stdout } = await execFileAsync(process.execPath, [
     'dist/cli.js',
     'check',
