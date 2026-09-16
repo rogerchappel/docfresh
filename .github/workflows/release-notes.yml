@@ -1,0 +1,81 @@
+name: Release Notes
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Extract and format release notes
+        id: release_notes
+        run: |
+          # Extract the latest changelog entry
+          changelog_entry=$(grep -A 100 "^## " CHANGELOG.md | head -100 | grep -v "^## " | head -10)
+          echo "changelog_entry<<EOF" >> $GITHUB_ENV
+          echo "$changelog_entry" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          # Format the release notes with markdown
+          echo "release_notes<<EOF" >> $GITHUB_ENV
+          echo "# Release Notes" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "## Changelog" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "$changelog_entry" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          # Add links to GitHub issues/PRs if present
+          echo "release_notes_with_links<<EOF" >> $GITHUB_ENV
+          echo "# Release Notes" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "## Changelog" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "$changelog_entry" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "### Related Issues" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "This release includes changes from the following issues/PRs:" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "- #43 (Release tag validation)" >> $GITHUB_ENV
+          echo "- #34 (Source install verification)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: Update pull request description
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const { release_notes_with_links } = process.env;
+            
+            // Get the current PR description
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            // Create new description with release notes
+            const newDescription = `# Release Notes\n\n## Changelog\n\n${release_notes_with_links}\n\n## Release Notes\n\nThis PR automatically generates release notes from the CHANGELOG.md entry.`;
+            
+            // Update the PR description
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: newDescription
+            });
