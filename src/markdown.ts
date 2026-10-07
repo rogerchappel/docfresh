@@ -68,6 +68,7 @@ export function extractCommandBlocks(document: MarkdownDocument): CommandBlock[]
         return;
       }
 
+
       blocks.push({
         file: document.path,
         line: active.line,

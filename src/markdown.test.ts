@@ -58,3 +58,24 @@ test('mismatched and shorter fences remain content until a valid closing fence',
     'npm run third'
   ].join('\n'));
 });
+
+test('invalid fence closers with trailing content stay inside the block', () => {
+  const blocks = extractCommandBlocks({
+    path: 'README.md',
+    content: '',
+    lines: [
+      '```sh',
+      'npm run first',
+      '``` not-a-closer',
+      '[link](https://example.invalid)',
+      '```'
+    ]
+  });
+
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0]?.content, [
+    'npm run first',
+    '``` not-a-closer',
+    '[link](https://example.invalid)'
+  ].join('\n'));
+});
